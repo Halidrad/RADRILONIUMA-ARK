@@ -4,6 +4,11 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+if [[ "${1:-}" == "--env-requirements" ]]; then
+  python3 scripts/ubuntu_env_requirements.py --install-plan
+  exit $?
+fi
+
 export PYTEST_ADDOPTS="${PYTEST_ADDOPTS:--p no:cacheprovider}"
 
 PYTEST_BIN=""
@@ -62,7 +67,7 @@ case "${1:---all}" in
     "$PYTEST_BIN" -q tests --maxfail=1
     ;;
   *)
-    echo "usage: $0 [--all|--unit-only|--integration|--governance|--patch-runtime|--preflight|--ci]"
+    echo "usage: $0 [--all|--unit-only|--integration|--governance|--patch-runtime|--preflight|--env-requirements|--ci]"
     exit 2
     ;;
 esac
