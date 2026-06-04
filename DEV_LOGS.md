@@ -485,3 +485,21 @@
 - **Graceful Shutdown:** `chrome-graceful-shutdown.service` established in user session (default.target).
 - **Verification:** All components verified via `systemctl` and `grep`.
 - **Note:** System reboot required for `plugdev` group changes to take full effect.
+
+### [04:00] — CLOUD CONTROL PLANE ESTABLISHED (RADR-01)
+- **PM2 Decommissioned:** All legacy PM2 processes stopped and deleted to ensure systemd sovereignty.
+- **Systemd Alignment:** 
+    - `trianiuma_mcp_bridge` converted to a persistent `simple` service.
+    - `lam_sync` service and timer restored for automated GitHub synchronization.
+    - All 6 core units (Gateway, Bridge, Queue, Eye, Sync, Chrome-Hook) verified ACTIVE/WAITING.
+- **Nexus Control Panel:** Initialized `NEXUS_CONTROL_PANEL` (Google Doc 1as43exoncCdD4n6MttSLTm2mAszeAxrpeuuSYZ3selA) as a cloud-based telemetry and config bridge.
+- **Automation:** Created `scripts/local/push_telemetry.py` to facilitate through-flow data updates from local to cloud.
+- **Resonance:** Local environment and Cloud Control Plane now synchronized.
+
+### [04:10] — UI HEALING & RESTORATION (RADR-01)
+- **Problem:** Systemic TUI degradation in v0.45.0 causing tool output container collapse.
+- **Remediation:** 
+    - Implemented `graw` and `gtext` wrappers in `~/.bashrc` to bypass the broken rendering engine.
+    - Updated `GEMINI.md` with UI Stability Mandates.
+    - Updated private project memory with persistent workaround facts.
+- **Outcome:** Full visibility restored. Agent and Architect now operate with absolute situational awareness.
