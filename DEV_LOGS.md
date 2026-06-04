@@ -474,3 +474,14 @@
   - `TASK_MAP.md` -> `phaseR_R2=COMPLETE (6/6)`
   - `SYSTEM_STATE.md` -> `current_phase_focus=PHASE_R_WAVE_1_OWNER_EXECUTION_DONE`
   - `WORKFLOW_SNAPSHOT_STATE.md` -> `phase=PHASE_R_WAVE_1_OWNER_EXECUTION_DONE`
+
+## [2026-06-04] — AELARIA SYSTEM PATCH (BRIDGE DIRECTIVE)
+
+### [03:30] — PATCH EXECUTION (RADR-01)
+- **Bluetooth Fix:** `AutoEnable=true` enforced in `/etc/bluetooth/main.conf`. Service restarted.
+- **Hardware Stack:** `openrazer-meta`, `polychromatic`, and `input-remapper` installed via PPAs.
+- **Group Membership:** User added to `plugdev` group.
+- **Service Status:** `input-remapper-daemon` ACTIVE and ENABLED.
+- **Graceful Shutdown:** `chrome-graceful-shutdown.service` established in user session (default.target).
+- **Verification:** All components verified via `systemctl` and `grep`.
+- **Note:** System reboot required for `plugdev` group changes to take full effect.

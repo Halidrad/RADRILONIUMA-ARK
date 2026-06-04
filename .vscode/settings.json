@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "trianiuma-core": {
+      "command": "node",
+      "args": ["/home/architit/LAM_CORE/RADRILONIUMA/mcp_server/index.js"]
+    }
+  }
+}

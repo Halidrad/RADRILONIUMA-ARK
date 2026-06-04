@@ -103,21 +103,30 @@ def mount_item(local_root: str) -> dict[str, Any]:
     return item("mount:local_root", "PASS", "local root mount resolved", result["stdout"].strip())
 
 
-def pm2_item(name: str, required_online: bool = True) -> dict[str, Any]:
-    result = run(["pm2", "jlist"], timeout=10)
+def systemd_item(service_name: str, required_online: bool = True) -> dict[str, Any]:
+    result = run(["systemctl", "show", service_name, "--property=ActiveState,SubState,MainPID,Result"], timeout=5)
     if not result["ok"]:
-        return item(f"pm2:{name}", "FAIL", result["stderr"] or result["stdout"])
-    try:
-        processes = json.loads(result["stdout"])
-    except json.JSONDecodeError:
-        return item(f"pm2:{name}", "FAIL", "pm2 jlist returned invalid JSON")
-    proc = next((p for p in processes if p.get("name") == name), None)
-    if not proc:
-        return item(f"pm2:{name}", "FAIL" if required_online else "WARN", "process not registered")
-    status = proc.get("pm2_env", {}).get("status", "unknown")
-    if status == "online":
-        return item(f"pm2:{name}", "PASS", "process online", {"pid": proc.get("pid"), "status": status})
-    return item(f"pm2:{name}", "FAIL" if required_online else "WARN", f"process status is {status}")
+        return item(f"systemd:{service_name}", "FAIL" if required_online else "WARN", f"service not found or systemctl error: {result['stderr']}")
+    
+    props = {}
+    for line in result["stdout"].splitlines():
+        if "=" in line:
+            k, v = line.split("=", 1)
+            props[k] = v
+            
+    active_state = props.get("ActiveState", "unknown")
+    sub_state = props.get("SubState", "unknown")
+    res = props.get("Result", "unknown")
+    pid = props.get("MainPID", "0")
+    
+    if active_state == "active":
+        return item(f"systemd:{service_name}", "PASS", f"service {active_state} ({sub_state})", {"pid": pid, "status": active_state})
+    
+    # Handle oneshot services that exit successfully
+    if active_state == "inactive" and sub_state == "dead" and res == "success":
+        return item(f"systemd:{service_name}", "PASS", f"service {active_state} ({sub_state}) - last run successful", {"status": active_state, "result": res})
+
+    return item(f"systemd:{service_name}", "FAIL" if required_online else "WARN", f"service status is {active_state} ({sub_state}), result={res}")
 
 
 def mcp_item() -> dict[str, Any]:
@@ -153,8 +162,8 @@ def install_plan() -> list[str]:
         "sudo apt-get update",
         "sudo apt-get install -y libsecret-1-0 udisks2 ntfs-3g smartmontools nvme-cli",
         "cd mcp_server && npm install",
-        "pm2 start ecosystem.config.js",
-        "pm2 save",
+        "sudo systemctl daemon-reload",
+        "sudo systemctl enable lam_gateway.service trianiuma_mcp_bridge.service lam_sync.timer",
     ]
 
 
@@ -167,17 +176,19 @@ def build_report(args: argparse.Namespace) -> dict[str, Any]:
     checks.append(item("policy", "PASS" if policy else "FAIL", "routing policy loaded" if policy else "routing policy missing"))
     checks.append(item("policy:local_root", "PASS" if local_root else "FAIL", local_root or "not configured"))
 
-    for command in ["python3", "node", "npm", "pm2", "git", "lsblk", "findmnt", "udisksctl"]:
+    for command in ["python3", "node", "npm", "git", "lsblk", "findmnt", "udisksctl"]:
         checks.append(command_check(command, required=True))
-    for command in ["ntfsfix", "smartctl", "nvme", "gemini", "google-chrome", "chromium", "chromium-browser"]:
+    for command in ["pm2", "ntfsfix", "smartctl", "nvme", "gemini", "google-chrome", "chromium", "chromium-browser"]:
         checks.append(command_check(command, required=False))
 
     checks.append(mount_item(local_root))
     checks.append(local_health_item(policy))
     checks.append(mcp_item())
-    checks.append(pm2_item("LAM_GATEWAY", required_online=True))
-    checks.append(pm2_item("TRIANIUMA_MCP_BRIDGE", required_online=True))
-    checks.append(pm2_item("LAM_QUEUE_WORKER", required_online=False))
+    checks.append(systemd_item("lam_gateway.service", required_online=True))
+    checks.append(systemd_item("trianiuma_mcp_bridge.service", required_online=True))
+    checks.append(systemd_item("lam_queue_worker.service", required_online=False))
+    checks.append(systemd_item("validating_eye.service", required_online=True))
+
 
     if args.write_test:
         checks.append(write_test_item(local_root))

@@ -1,5 +1,13 @@
 {
   "workspace": {
     "root": "/home/architit/work"
+  },
+  "mcpServers": {
+    "trianiuma-mcp-core": {
+      "command": "node",
+      "args": [
+        "/home/architit/LAM_CORE/RADRILONIUMA/mcp_server/index.js"
+      ]
+    }
   }
 }
