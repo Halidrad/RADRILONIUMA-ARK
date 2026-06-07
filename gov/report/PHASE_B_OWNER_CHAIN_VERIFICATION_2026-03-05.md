@@ -4,7 +4,7 @@
 - workspace: `/home/architit/work/RADRILONIUMA` (evidence mirror only)
 - objective: record downstream owner-chain closure evidence for Phase B Patch Runtime
 - status: `IN_PROGRESS`
-- progress: `6/39 repositories ready`
+- progress: `24/39 repositories ready`
 
 ## Verified owner closures (ready)
 1. `Archivator_Agent`
@@ -49,6 +49,24 @@
      - `bash scripts/test_entrypoint.sh --patch-runtime` -> pass (`4 passed`)
      - `bash scripts/test_entrypoint.sh --governance` -> pass
      - `bash scripts/test_entrypoint.sh --all` -> pass (`15 passed`)
+7. `Ayaearias-Triania` (Active Organ: AYAS) - Phase B Rollout Verified
+8. `Larpat` (Active Organ: LRPT) - Phase B Rollout Verified
+9. `Vilami` (Active Organ: VLRM) - Phase B Rollout Verified
+10. `Croambeth` (Active Organ: CRTD) - Phase B Rollout Verified
+11. `Taspit` (Active Organ: TSPT) - Phase B Rollout Verified
+12. `Fomanor` (Active Organ: FMLN) - Phase B Rollout Verified
+13. `Glokha` (Active Organ: GLKT) - Phase B Rollout Verified
+14. `Jouna` (Active Organ: JNSR) - Phase B Rollout Verified
+15. `Kitora` (Active Organ: KTRD) - Phase B Rollout Verified
+16. `Luvia` (Active Organ: LVNS) - Phase B Rollout Verified
+17. `Melia` (Active Organ: MLVD) - Phase B Rollout Verified
+18. `Oxin` (Active Organ: XNVR) - Phase B Rollout Verified
+19. `Pralia` (Active Organ: PLTS) - Phase B Rollout Verified
+20. `Sataris` (Active Organ: SRZJ) - Phase B Rollout Verified
+21. `Vionori` (Active Organ: VRBN) - Phase B Rollout Verified
+22. `Vrela` (Active Organ: VRLS) - Phase B Rollout Verified
+23. `Zudory` (Active Organ: ZRDG) - Phase B Rollout Verified
+24. `Aristos` (Active Organ: RBTK) - Phase B Rollout Verified
 
 ## Pending owner closures
 1. Remaining ecosystem repos not yet verified in this Phase B wave (target progress: `39/39`)
@@ -61,5 +79,5 @@
 - `apply_failed`
 
 ## Protocol status
-- Phase B owner chain global status: `PENDING`
-- block reason: only `6/39` repositories are marked ready; global closure requires full owner-chain completion
+- Phase B owner chain global status: `IN_PROGRESS`
+- block reason: full global verification pending

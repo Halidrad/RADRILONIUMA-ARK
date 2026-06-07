@@ -1,12 +1,12 @@
 # SYSTEM STATE: RADRILONIUMA (RADR-01 / AELARIA)
 
-- timestamp_utc: 2026-06-07T04:55:00Z
+- timestamp_utc: 2026-06-07T05:00:00Z
 - system_id: RADR-01
 - role: Bridge (Captain Bridge)
 - governor: Ayaearias Triania (AYAS-01)
 - status: ACTIVE_READY
 - diagnostic_pending: NONE
-- wave_progress: PHASE_A_WAVE_1_TASKSPEC_CORE (LOCAL_DONE)
+- wave_progress: PHASE_A_WAVE_1_TASKSPEC_CORE (GLOBAL_IN_PROGRESS)
 - gate: MASTER_ALIGNMENT_BRIDGE_DIRECTIVE = PASS
 - licensing_shield_rollout: PASS (39/39 repositories secured and pushed)
 - current_phase_focus: PHASE_08.3_RESEARCH_AND_AUTOPILOT_INIT
@@ -57,8 +57,8 @@
   - `contract/PATCH_RUNTIME_CONTRACT_V1.md`
   - `tests/test_patch_runtime_governance.py`
 - local_closure_status: DONE
-- global_closure_status: PENDING
-- global_closure_progress: 6/39 repositories ready
+- global_closure_status: IN_PROGRESS
+- global_closure_progress: 24/39 repositories ready (6 verified + 18 rolled out)
 
 ## Next Executable Package (Phase B Owner-Chain Global Closure)
 - wave_id: PHASE_B_OWNER_CHAIN_GLOBAL
@@ -81,8 +81,8 @@
 - status: WAVE_CLOSED
 - transition_mode: wave-based
 - prerequisite_status_snapshot:
-  - phaseA_global: `PENDING` (`6/39`)
-  - phaseB_global: `PENDING` (`6/39`)
+  - phaseA_global: `IN_PROGRESS` (`24/39`)
+  - phaseB_global: `IN_PROGRESS` (`24/39`)
 - kickoff_evidence:
   - `gov/report/PHASE_C_WAVE_KICKOFF_2026-03-05.md`
   - `gov/report/PHASE_C_WAVE_1_MEMORY_SURFACE_PREP_2026-03-05.md` (`phaseC_C1=DONE`)
@@ -97,8 +97,8 @@
 - transition_mode: wave-based
 - prerequisite_status_snapshot:
   - phaseC_wave1: `DONE` (`6/6`)
-  - phaseA_global: `PENDING` (`6/39`)
-  - phaseB_global: `PENDING` (`6/39`)
+  - phaseA_global: `IN_PROGRESS` (`24/39`)
+  - phaseB_global: `IN_PROGRESS` (`24/39`)
 - kickoff_evidence:
   - `gov/report/PHASE_D_WAVE_KICKOFF_2026-03-05.md` (`phaseD_D0=DONE`)
   - `gov/report/PHASE_D_WAVE_1_TRANSPORT_CONTRACT_PLAN_2026-03-05.md` (`phaseD_D1=DONE`)
@@ -112,8 +112,8 @@
 - transition_mode: wave-based
 - prerequisite_status_snapshot:
   - phaseD_wave1: `DONE` (`6/6`)
-  - phaseA_global: `PENDING` (`6/39`)
-  - phaseB_global: `PENDING` (`6/39`)
+  - phaseA_global: `IN_PROGRESS` (`24/39`)
+  - phaseB_global: `IN_PROGRESS` (`24/39`)
 - kickoff_evidence:
   - `gov/report/PHASE_E_WAVE_KICKOFF_2026-03-05.md` (`phaseE_E0=DONE`)
   - `gov/report/PHASE_E_WAVE_1_FLOW_CONTROL_CONTRACT_PLAN_2026-03-05.md` (`phaseE_E1=DONE`)
@@ -127,8 +127,8 @@
 - transition_mode: wave-based
 - prerequisite_status_snapshot:
   - phaseE_wave1: `DONE` (`6/6`)
-  - phaseA_global: `PENDING` (`6/39`)
-  - phaseB_global: `PENDING` (`6/39`)
+  - phaseA_global: `IN_PROGRESS` (`24/39`)
+  - phaseB_global: `IN_PROGRESS` (`24/39`)
 - kickoff_evidence:
   - `gov/report/PHASE_F_WAVE_KICKOFF_2026-03-05.md` (`phaseF_F0=DONE`)
   - `gov/report/PHASE_F_WAVE_1_P0_SAFETY_CONTRACT_PLAN_2026-03-05.md` (`phaseF_F1=DONE`)
@@ -142,8 +142,8 @@
 - transition_mode: wave-based
 - prerequisite_status_snapshot:
   - phaseF_wave1: `DONE` (`6/6`)
-  - phaseA_global: `PENDING` (`6/39`)
-  - phaseB_global: `PENDING` (`6/39`)
+  - phaseA_global: `IN_PROGRESS` (`24/39`)
+  - phaseB_global: `IN_PROGRESS` (`24/39`)
 - kickoff_evidence:
   - `gov/report/PHASE_R_WAVE_KICKOFF_2026-03-05.md` (`phaseR_R0=DONE`)
   - `gov/report/PHASE_R_WAVE_1_RESEARCH_GATE_PLAN_2026-03-05.md` (`phaseR_R1=DONE`)
@@ -156,4 +156,4 @@
 - no_new_agents_or_repos: enforced
 - anti_sprawl_gate: enforced
 - one_cycle_one_atomic_task: enforced
-last_heartbeat_utc: 2026-06-07T03:43:00Z
+last_heartbeat_utc: 2026-06-07T05:00:00Z

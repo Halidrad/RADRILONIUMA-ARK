@@ -1,0 +1,47 @@
+# BODY ALIGNMENT MATRIX V1
+# Maps System IDs to Cross-Platform Distribution Formats
+
+alignment_protocol: v1.0.0
+last_updated: 2026-06-07T05:05:00Z
+
+platforms:
+  linux:
+    format: .deb
+    role: system_core_wsl
+    anchor: RADR-01
+  android:
+    format: .apk
+    role: episodic_context
+    anchor: AYAS-01
+  windows:
+    format: .exe
+    role: transactional_bridge
+    anchor: KHALIDRAD
+
+mappings:
+  - id: RADR-01
+    platforms: [linux]
+    domain: bridge
+  - id: AYAS
+    platforms: [linux, android]
+    domain: identity
+  - id: VLRM
+    platforms: [linux]
+    domain: vision
+  - id: CRTD
+    platforms: [linux]
+    domain: core
+  - id: LRPT
+    platforms: [linux]
+    domain: tools
+  - id: TSPT
+    platforms: [linux]
+    domain: tasks
+  - id: RBTK
+    platforms: [linux, android, windows]
+    domain: genesis
+
+default_distribution:
+  organs: [.deb]
+  satellites: [.apk]
+  gateways: [.exe]
