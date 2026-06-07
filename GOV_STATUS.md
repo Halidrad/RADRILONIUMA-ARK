@@ -12,10 +12,11 @@ closure_decision: PHASE_10_COMPLETE
 ## Current Focus
 - Phase: 11.0_AUTONOMOUS_INTEGRATION_PLANNING
 - Objective: Multi-Agent Autonomous Orchestration
-- Status: READY_FOR_KICKOFF
+- Status: ACTIVE
 
 ## Required Pointers
 - roadmap: ROADMAP.md
+- phase_11_protocol: gov/report/PHASE_11_GOVERNANCE_PROTOCOL.md
 - phase_10_plan: gov/report/PHASE_10_REFINEMENT_ROADMAP.md
 - dev_logs: DEV_LOGS.md
 - workflow_snapshot: WORKFLOW_SNAPSHOT_STATE.md
