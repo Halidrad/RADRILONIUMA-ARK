@@ -1,0 +1,7 @@
+diff --git a/dummy.txt b/dummy.txt
+index 421376d..5ea2ed4 100644
+--- a/dummy.txt
++++ b/dummy.txt
+@@ -1 +1 @@
+-dummy
++changed
