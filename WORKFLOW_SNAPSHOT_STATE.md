@@ -3,14 +3,14 @@
 ## Identity
 repo: RADRILONIUMA
 branch: master
-timestamp_utc: 2026-03-05T08:47:48Z
+timestamp_utc: 2026-06-07T04:04:00Z
 
 ## Current pointer
 phase: PHASE_R_WAVE_1_OWNER_EXECUTION_DONE
 protocol_scale: +1
 protocol_semantic_en: positive
 goal:
-- Start Phase R by wave-based progression after Phase F wave-1 closure.
+- Transition and verify the boot, autostart, and lifesupport configuration from gemini to agy.
 - Keep Phase A/B global closure markers in `PENDING` until full readiness.
 - Keep rollout through existing owners only (no-new-agents).
 - Keep delegation strictly within existing nodes (anti-sprawl).
@@ -68,7 +68,9 @@ constraints:
 - 4fff07a chore: initial repository baseline
 
 ## Git status (captured before this gate edits)
-## master
+## master...origin/master
+ M boot_cli.sh
+ A boot_cli_inner.sh
 
 ## References
 - /home/architit/MASTER_ARCHITECTURE_PLAN_V1.md

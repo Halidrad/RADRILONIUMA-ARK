@@ -278,3 +278,13 @@
 - **Sync:** Committed changes signed by `Architit <lkises01@gmail.com>` and pushed to their remote branches using the new authorized SSH key.
 - **Status:** All 39 repositories in the global ecosystem are fully licensed, committed, and synchronized.
 
+### [04:04] — BOOT LOADERS & AUTOSTART TRANSITION TO AGY
+- **Action:** Transitioned user-level startup and autostart routines from gemini-cli to agy (Antigravity CLI).
+- **Scripts:** Refactored `boot_cli.sh` and created `boot_cli_inner.sh` to provide an interactive boot screen, automatically extract `NEW_CHAT_INIT_MESSAGE` for session recovery, copy to system clipboard if xclip is available, and run agy with selection options.
+- **Autostart:** Created ~/.config/autostart/agy-cli-boot.desktop and deleted old gemini-cli-boot.desktop.
+- **Systemd:** Decommissioned PM2 startup from user space, replaced with ~/.config/systemd/user/agy-autostart.service which runs devkit/bootstrap.sh preflight on user login. Removed deprecated gemini-autostart.service.
+- **Verification:** User-level systemd service verified (status active exited with SUCCESS), system-level lifesupport services (lam_gateway.service, etc.) confirmed active and running.
+- **Status:** Done.
+- **Resonance:** 432 Hz.
+
+
