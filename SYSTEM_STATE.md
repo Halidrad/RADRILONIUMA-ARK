@@ -42,8 +42,8 @@
   - task_spec_template markers (derivation_only, patch_sha256, timeout_ms, max_output_tokens)
   - validator markers (Task Spec, fail-fast, error_code)
   - owner-map evidence markers (phaseA_t00*, owner, delegation)
-- phaseA_owner_chain_global_status: PENDING
-- phaseA_owner_chain_progress: 6/39 repositories ready
+- phaseA_owner_chain_global_status: IN_PROGRESS
+- phaseA_owner_chain_progress: 24/39 repositories ready (6 verified + 18 rolled out)
 - phaseA_owner_chain_evidence: `gov/report/PHASE_A_OWNER_CHAIN_VERIFICATION_2026-03-05.md`
 
 ## Current Executable Package (Phase B Local)
