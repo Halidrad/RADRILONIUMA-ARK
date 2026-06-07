@@ -56,7 +56,14 @@ def signal_monitor_thread(proc):
         if SIGNAL_FILE.exists():
             SIGNAL_FILE.unlink()
             trigger_exit()
-            # The session will now terminate naturally
+            # Fallback for Wayland or xdotool failure: wait and force-terminate if still running
+            time.sleep(3)
+            if proc.poll() is None:
+                print(">>> [KERNEL] Natural exit timed out. Terminating process...")
+                proc.terminate()
+                time.sleep(1)
+                if proc.poll() is None:
+                    proc.kill()
             break
         time.sleep(1)
 
