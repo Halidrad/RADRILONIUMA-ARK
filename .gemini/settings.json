@@ -116,6 +116,16 @@
       "command": "node",
       "args": ["/home/architit/LAM_CORE/RADRILONIUMA/mcp_server/index.js", "--organ=DORM-03"],
       "env": { "LAM_ORGAN_NAME": "DORM-03" }
+    },
+    "trianiuma-mcp-core": {
+      "command": "node",
+      "args": ["/home/architit/LAM_CORE/RADRILONIUMA/mcp_server/index.js", "--organ=trianiuma-mcp-core"],
+      "env": { "LAM_ORGAN_NAME": "trianiuma-mcp-core" }
+    },
+    "radriloniuma-os-mcp": {
+      "command": "node",
+      "args": ["/home/architit/LAM_CORE/RADRILONIUMA/mcp_server/index.js", "--organ=radriloniuma-os-mcp"],
+      "env": { "LAM_ORGAN_NAME": "radriloniuma-os-mcp" }
     }
   }
 }
