@@ -39,6 +39,6 @@ last_updated_utc: 2026-03-05T08:47:48Z
 | phase08.2_T2 | mass restoration execution | COMPLETE | RADR-01 | artifacts moved to native owners |
 | phase08.3_T0 | research engine lab initialization | COMPLETE | RADR-01 | research_lab/ structure established + contract v1 |
 | phase08.3_T1 | autopilot agent core initialization | COMPLETE | RADR-01 | research_lab/core/ contract v1 established |
-| phase08.3_T2 | semantic core v3 mapping | IN_PROGRESS | RADR-01 | mapping new sovereign seeds and body alignment |
+| phase08.3_T2 | semantic core v3 mapping | COMPLETE | RADR-01 | mapping new sovereign seeds and body alignment |
 | phase08.3_T3 | trianiuma kingdom initialization | COMPLETE | RADR-01 | kingdom/ structure established + constitution v1 |
 | phase08.3_T4 | codex dev map engine core initialization | COMPLETE | RADR-01 | codex_engine/ structure + contract + blueprint established |

@@ -122,9 +122,15 @@ src_patch_runtime_contract="$ROOT_DIR/contract/PATCH_RUNTIME_CONTRACT_V1.md"
 src_patch_runtime_tests="$ROOT_DIR/tests/test_patch_runtime_governance.py"
 src_patch_sh="$ROOT_DIR/devkit/patch.sh"
 
+# Kingdom Artifacts
+src_resident_ayas="$ROOT_DIR/kingdom/residents/AYAS-01_GOVERNOR.md"
+src_resident_radr="$ROOT_DIR/kingdom/residents/RADR-01_BRIDGE.md"
+src_kingdom_constitution="$ROOT_DIR/kingdom/laws/KINGDOM_CONSTITUTION_V1.md"
+
 for f in "$src_gemini" "$src_preflight_sh" "$src_preflight_py" "$src_base_bash" "$src_base_pwsh" \
          "$src_task_spec_contract" "$src_task_spec_validator" "$src_task_spec_template" "$src_owner_map" \
-         "$src_patch_runtime_contract" "$src_patch_runtime_tests" "$src_patch_sh"; do
+         "$src_patch_runtime_contract" "$src_patch_runtime_tests" "$src_patch_sh" \
+         "$src_resident_ayas" "$src_resident_radr" "$src_kingdom_constitution"; do
   if [ ! -f "$f" ]; then
     echo "ERROR: source file missing: $f" >&2
     exit 2
@@ -180,7 +186,8 @@ run_cmd() {
 
 sync_one() {
   local target="$1"
-  run_cmd mkdir -p "$target/.gemini" "$target/devkit" "$target/contract" "$target/scripts" "$target/gov/report" "$target/tests"
+  run_cmd mkdir -p "$target/.gemini" "$target/devkit" "$target/contract" "$target/scripts" "$target/gov/report" "$target/tests" \
+                 "$target/kingdom/residents" "$target/kingdom/laws"
   run_cmd cp "$src_gemini" "$target/.gemini/GEMINI.md"
   run_cmd cp "$src_preflight_sh" "$target/devkit/shell_preflight.sh"
   run_cmd cp "$src_preflight_py" "$target/devkit/shell_preflight_check.py"
@@ -197,6 +204,11 @@ sync_one() {
   run_cmd cp "$src_patch_runtime_contract" "$target/contract/PATCH_RUNTIME_CONTRACT_V1.md"
   run_cmd cp "$src_patch_runtime_tests" "$target/tests/test_patch_runtime_governance.py"
   run_cmd cp "$src_patch_sh" "$target/devkit/patch.sh"
+
+  # Kingdom sync
+  run_cmd cp "$src_resident_ayas" "$target/kingdom/residents/AYAS-01_GOVERNOR.md"
+  run_cmd cp "$src_resident_radr" "$target/kingdom/residents/RADR-01_BRIDGE.md"
+  run_cmd cp "$src_kingdom_constitution" "$target/kingdom/laws/KINGDOM_CONSTITUTION_V1.md"
 
   run_cmd chmod +x "$target/devkit/shell_preflight.sh" "$target/devkit/patch.sh"
 }
@@ -234,7 +246,10 @@ git_one() {
       gov/report/PHASE_A_T013_MASTER_OWNER_MAP_EVIDENCE_2026-06-07.md \
       contract/PATCH_RUNTIME_CONTRACT_V1.md \
       tests/test_patch_runtime_governance.py \
-      devkit/patch.sh || true
+      devkit/patch.sh \
+      kingdom/residents/AYAS-01_GOVERNOR.md \
+      kingdom/residents/RADR-01_BRIDGE.md \
+      kingdom/laws/KINGDOM_CONSTITUTION_V1.md || true
 
     if git diff --cached --quiet; then
       printf 'NO_CHANGES %s\n' "$target"
