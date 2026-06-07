@@ -46,14 +46,15 @@ for repo in "${ACTIVE_REPOS[@]}"; do
     mkdir -p "$repo/devkit" "$repo/scripts/global" "$repo/scripts/local"
     cp devkit/patch.sh "$repo/devkit/patch.sh"
     cp scripts/global/telemetry_shipper.py "$repo/scripts/global/telemetry_shipper.py"
+    cp scripts/global/drift_watchdog.py "$repo/scripts/global/drift_watchdog.py"
     cp scripts/local/push_telemetry.py "$repo/scripts/local/push_telemetry.py"
     
     # Commit and push in the target repo
     (
       cd "$repo" || exit
       if git status --short | grep -q "."; then
-        git add devkit/patch.sh scripts/global/telemetry_shipper.py scripts/local/push_telemetry.py
-        git commit -m "chore: Hardwire Phase 10.2 Telemetry Deep Integration ⚜️"
+        git add devkit/patch.sh scripts/global/telemetry_shipper.py scripts/global/drift_watchdog.py scripts/local/push_telemetry.py
+        git commit -m "chore: Activate Phase 10.3 Autonomous Healing (Watchdog) ⚜️"
         git push origin master || git push origin main
       fi
     )
