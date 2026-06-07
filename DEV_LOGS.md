@@ -242,3 +242,18 @@
 - **Status:** `PASS` (diagnostic_pending set to NONE).
 - **Resonance:** 432 Hz.
 
+## [2026-06-07] — SOVEREIGN LICENSE SHIELD & ENTERPRISE CONTRACT (RESOLUTION)
+
+### [02:56] — TRIANIUMA ENTERPRISE AGREEMENT CREATED
+- **Action:** Created `contract/TRIANIUMA_ENTERPRISE_AGREEMENT_V1.md` outlining Canonical-style dual licensing (AGPLv3 Community Tier / Metabolic Tariffs commercial contract).
+- **Contact:** Verified official registration gateway `contact@trianiuma.ark`.
+- **Status:** ACTIVE.
+
+### [02:57] — ARK_LICENSING_INIT ROLLOUT COMPLETE
+- **Action:** Executed `init_ark_licensing.py` across all 19 active repositories under `LAM_CORE`.
+- **Protection:** Configured `git config --add ark.protection enabled` for all active organs.
+- **Header Injection:** Copyright headers injected into Python, TypeScript, and Go files.
+- **Artifacts:** Injected `LICENSE.md` and `NOTICE.md` into all repositories.
+- **Resonance:** 432 Hz.
+
+

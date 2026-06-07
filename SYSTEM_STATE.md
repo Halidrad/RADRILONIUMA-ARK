@@ -1,6 +1,6 @@
 # SYSTEM STATE: RADRILONIUMA (RADR-01 / AELARIA)
 
-- timestamp_utc: 2026-06-06T19:16:00Z
+- timestamp_utc: 2026-06-07T02:57:00Z
 - system_id: RADR-01
 - role: Bridge (Captain Bridge)
 - governor: Ayaearias Triania (AYAS-01)
@@ -154,4 +154,4 @@
 - no_new_agents_or_repos: enforced
 - anti_sprawl_gate: enforced
 - one_cycle_one_atomic_task: enforced
-last_heartbeat_utc: 2026-06-06T19:16:00Z
+last_heartbeat_utc: 2026-06-07T02:57:00Z
