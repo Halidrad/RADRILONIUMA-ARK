@@ -7,6 +7,9 @@ echo "[SYSTEM] Running preflight check..."
 source /home/architit/LAM_CORE/RADRILONIUMA/venv/bin/activate
 bash devkit/bootstrap.sh
 
+# Run Multi-Agent Boot Protocol (Phase 11.3)
+bash scripts/local/boot_protocol.sh
+
 echo -e "\n\e[1;35m==================================================\e[0m"
 echo -e "\e[1;35m       A E L A R I A  --  B O O T  L O A D E R     \e[0m"
 echo -e "\e[1;35m==================================================\e[0m"
