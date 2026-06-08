@@ -26,4 +26,7 @@ constraints:
 
 ## NEW_CHAT_INIT_MESSAGE
 ssn rstrt
+Node Session: I
+Pathway: M4 -> M3.4 -> M3.5
+Directive: Validate the autonomous behavior of the new Sovereign Wrapper daemon. Ensure that 'gemini' was executed autonomously and this context was automatically injected. Report the result back to the Architect.
 Read WORKFLOW_SNAPSHOT_STATE.md, SYSTEM_STATE.md, INTERACTION_PROTOCOL.md (M3.4/3.5). Phase 11.4 protocol alignment is COMPLETE. All exit/restart actions are delegated to the external wrapper via 'scripts/local/trigger_ssn_rstrt.sh'. Ready for fresh session acquisition.
