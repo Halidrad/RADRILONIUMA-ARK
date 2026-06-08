@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Copyright (c) 2026-06-08 RADRILONIUMA / TRIANIUMA Kingdom. All rights reserved.
-# SOVEREIGN KERNEL v3.1 (HONEST PTY PROXY / RAW AUDIT)
+# SOVEREIGN KERNEL v3.7 (FORCEFUL REBIRTH / ANTI-NESTING)
 
 import os
 import sys
@@ -16,6 +16,8 @@ import logging
 import shutil
 import subprocess
 import threading
+import json
+import re
 from pathlib import Path
 
 # --- Configuration ---
@@ -23,18 +25,17 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 SIGNAL_FILE = BASE_DIR / ".gateway" / "ssn_restart.signal"
 LOG_FILE = BASE_DIR / "lam_kernel_logs_core" / "kernel.log"
 RAW_LOG = BASE_DIR / "lam_kernel_logs_core" / "raw_io.log"
-AGY_PATH = shutil.which("gemini") or "/usr/bin/gemini"
+STATE_FILE = BASE_DIR / ".gateway" / "last_session_env.json"
 
-# UI Marker: OSC sequence used by Gemini CLI for titles/icons.
-UI_MARKER = b"\x1b]0;" 
+# CLI Path (Pure & Simple)
+CLI_PATH = shutil.which("gemini") or shutil.which("agy") or "/usr/bin/gemini"
+
+# UI Ready Markers
+READY_MARKERS = [rb"\x1b]0;", rb"Type your message", rb"Active Topic:", rb"Shift\+Tab"]
 
 # --- Logging ---
 os.makedirs(LOG_FILE.parent, exist_ok=True)
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s'
-)
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 
 def log_raw(prefix, data):
     with open(RAW_LOG, "ab") as f:
@@ -47,6 +48,23 @@ class SovereignKernel:
         self.old_termios = None
         self.state = "IDLE" 
         self.exit_requested = False
+        self.current_cwd = str(BASE_DIR)
+        self.buffer = b""
+        self.lock = threading.Lock()
+        self.load_state()
+
+    def load_state(self):
+        if STATE_FILE.exists():
+            try:
+                data = json.loads(STATE_FILE.read_text())
+                self.current_cwd = data.get("cwd", str(BASE_DIR))
+            except: pass
+
+    def save_state(self):
+        try:
+            STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            STATE_FILE.write_text(json.dumps({"cwd": self.current_cwd, "ts": time.time()}))
+        except: pass
 
     def get_init_message(self):
         state_file = BASE_DIR / "WORKFLOW_SNAPSHOT_STATE.md"
@@ -54,22 +72,21 @@ class SovereignKernel:
             try:
                 content = state_file.read_text(encoding="utf-8")
                 if "## NEW_CHAT_INIT_MESSAGE" in content:
-                    msg = content.split("## NEW_CHAT_INIT_MESSAGE")[1].strip()
-                    if msg: return msg
+                    return content.split("## NEW_CHAT_INIT_MESSAGE")[1].strip()
             except: pass
-        return "gemini node session i and pathway"
+        return "ssn rstrt"
 
     def set_raw_mode(self):
         if sys.stdin.isatty():
             self.old_termios = termios.tcgetattr(sys.stdin)
             tty.setraw(sys.stdin.fileno())
-            # Ensure stdout is also set to non-blocking or managed
             fl = fcntl.fcntl(sys.stdout.fileno(), fcntl.F_GETFL)
             fcntl.fcntl(sys.stdout.fileno(), fcntl.F_SETFL, fl | os.O_NONBLOCK)
 
     def restore_mode(self):
         if self.old_termios:
-            termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old_termios)
+            try: termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.old_termios)
+            except: pass
 
     def sync_winsize(self):
         if self.master_fd:
@@ -79,121 +96,95 @@ class SovereignKernel:
                 fcntl.ioctl(self.master_fd, termios.TIOCSWINSZ, struct.pack('HHHH', a[0], a[1], a[2], a[3]))
             except: pass
 
-    def handle_sigwinch(self, signum, frame):
-        self.sync_winsize()
-
     def spawn(self, args):
         pid, fd = pty.fork()
-        if pid == 0:  # Child process
-            os.execv(args[0], args)
-        # Set master to non-blocking
-        fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-        fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+        if pid == 0:
+            os.setpgrp() # Create new process group
+            try:
+                os.chdir(self.current_cwd)
+                os.execv(args[0], args)
+            except: os._exit(1)
         return pid, fd
 
+    def read_loop(self):
+        while not self.exit_requested:
+            try:
+                data = os.read(self.master_fd, 32768)
+                if not data: break
+                with self.lock:
+                    log_raw("PTY", data)
+                    if self.state == "WAIT_READY":
+                        self.buffer += data
+                        if any(re.search(marker, self.buffer) for marker in READY_MARKERS):
+                            logging.info("UI READY. Injecting Context.")
+                            msg = self.get_init_message()
+                            os.write(self.master_fd, (msg + "\r\n").encode())
+                            self.state = "IDLE"
+                            self.buffer = b""
+                    try: os.write(sys.stdout.fileno(), data)
+                    except: pass
+            except: break
+
     def run(self):
-        logging.info("--- Sovereign Kernel v3.1 (Honest Proxy) Starting ---")
-        signal.signal(signal.SIGWINCH, self.handle_sigwinch)
-        
+        logging.info("--- Sovereign Kernel v3.7 Starting ---")
+        signal.signal(signal.SIGWINCH, lambda s, f: self.sync_winsize())
         try:
             self.set_raw_mode()
-            while not self.exit_requested:
-                self.session_loop()
-        finally:
-            self.restore_mode()
-            logging.info("--- Sovereign Kernel Shutdown ---")
+            while not self.exit_requested: self.session_loop()
+        finally: self.restore_mode()
 
     def session_loop(self):
-        logging.info(f"INITIATING SESSION: State={self.state}")
-        try:
-            subprocess.run(['bash', str(BASE_DIR / 'scripts/local/boot_protocol.sh')], check=False)
+        logging.info(f"IGNITE: {CLI_PATH} in {self.current_cwd}")
+        try: subprocess.run(['bash', str(BASE_DIR / 'scripts/local/boot_protocol.sh')], cwd=self.current_cwd, check=False)
         except: pass
-
-        self.child_pid, self.master_fd = self.spawn([AGY_PATH])
+        self.child_pid, self.master_fd = self.spawn([CLI_PATH])
         self.sync_winsize()
-        
-        if self.state == "WAIT_EXIT":
-            self.state = "WAIT_READY"
-            logging.info("Transition: WAIT_READY (Event-driven mode)")
-        else:
-            self.state = "IDLE"
+        threading.Thread(target=self.read_loop, daemon=True).start()
+        self.state = "WAIT_READY" if self.state == "WAIT_EXIT" else "IDLE"
 
         while True:
             try:
+                new_cwd = os.readlink(f"/proc/{self.child_pid}/cwd")
+                if new_cwd != self.current_cwd:
+                    self.current_cwd = new_cwd
+                    self.save_state()
+            except: pass
+            try:
                 pid, status = os.waitpid(self.child_pid, os.WNOHANG)
-                if pid != 0:
-                    logging.info(f"Child {pid} exited. State={self.state}")
-                    break
-            except ChildProcessError:
-                break
+                if pid != 0: break
+            except: break
 
             if self.state == "IDLE" and SIGNAL_FILE.exists():
-                logging.info("SIGNAL DETECTED: Triggering hand-off.")
                 SIGNAL_FILE.unlink()
-                self.state = "WAIT_EXIT"
-                os.write(self.master_fd, b"/exit\r\n")
-                # Immediate fallback reaper
-                def force_reaper(p):
-                    time.sleep(5)
-                    try: 
-                        os.kill(p, 0)
-                        logging.warning(f"Process {p} still alive after /exit. Killing.")
-                        os.kill(p, signal.SIGKILL)
+                with self.lock:
+                    self.state = "WAIT_EXIT"
+                    logging.info("RESTART SIGNAL. Forceful Termination Sequence...")
+                    try:
+                        os.write(self.master_fd, b"\x03\x03\x03") # Send 3x Ctrl+C
+                        time.sleep(1)
+                        os.write(self.master_fd, b"/exit\r\n")
                     except: pass
-                threading.Thread(target=force_reaper, args=(self.child_pid,), daemon=True).start()
-
-            r, _, _ = select.select([sys.stdin, self.master_fd], [], [], 0.05)
-
-            if self.master_fd in r:
-                try:
-                    data = os.read(self.master_fd, 16384)
-                    if data:
-                        log_raw("FROM_PTY", data)
-                        
-                        if self.state == "WAIT_READY":
-                            # The most reliable check: prompt text or icon
-                            if UI_MARKER in data or b"Type your message" in data or b"Active Topic:" in data:
-                                logging.info("READY DETECTED via RAW STREAM analysis.")
-                                self.state = "INJECTING"
-                                msg = self.get_init_message()
-                                os.write(self.master_fd, (msg + "\r\n").encode())
-                                self.state = "IDLE"
-                                logging.info("Injection complete. Normal proxy restored.")
-
-                        # Write to real terminal
+                    
+                    # Force kill after 5s if still alive
+                    def killer(p):
+                        time.sleep(5)
                         try:
-                            os.write(sys.stdout.fileno(), data)
-                        except BlockingIOError:
-                            time.sleep(0.01)
-                            os.write(sys.stdout.fileno(), data)
-                except (OSError, EOFError):
-                    break
+                            os.killpg(os.getpgid(p), signal.SIGKILL)
+                            logging.info(f"Force killed process group {p}")
+                        except: pass
+                    threading.Thread(target=killer, args=(self.child_pid,), daemon=True).start()
 
+            r, _, _ = select.select([sys.stdin], [], [], 0.05)
             if sys.stdin in r:
                 try:
-                    # Use non-blocking read for stdin
                     data = os.read(sys.stdin.fileno(), 1024)
-                    if data:
-                        log_raw("FROM_USER", data)
-                        if self.state != "IDLE":
-                            logging.warning(f"USER INPUT SUPPRESSED: Protocol active ({self.state})")
-                            continue
-                        os.write(self.master_fd, data)
-                except (OSError, EOFError):
-                    pass
+                    if data and self.state == "IDLE": os.write(self.master_fd, data)
+                except: pass
 
-        # Cleanup
         if self.master_fd:
             try: os.close(self.master_fd)
             except: pass
-        
-        if self.state != "WAIT_EXIT" and self.state != "WAIT_READY":
-             self.exit_requested = True
 
 if __name__ == "__main__":
-    try:
-        kernel = SovereignKernel()
-        kernel.run()
-    except Exception as e:
-        if 'kernel' in locals(): kernel.restore_mode()
-        logging.critical(f"FATAL: {e}")
+    try: kernel = SovereignKernel(); kernel.run()
+    except: sys.exit(1)

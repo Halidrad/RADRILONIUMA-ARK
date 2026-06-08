@@ -13,14 +13,13 @@
 - Mandated delegation of the initialization chain (`boot_protocol.sh && boot_cli_inner.sh`) to the external Sovereign Kernel Wrapper.
 - Explicitly prohibited manual kernel re-ignition within the current session context to prevent TUI overlap.
 
-### [04:30] — KERNEL ROBUSTNESS & PROTOCOL ALIGNMENT (FIX)
-- **Problem:** Restart mechanism failed on Wayland due to `xdotool` dependency and created nested sub-sessions.
-- **Remediation:** Upgraded `scripts/global/sovereign_kernel.py` to v1.3.
-    - Integrated `boot_protocol.sh` and `bootstrap.sh` into the main loop (compliance with M3.4).
-    - Added `SIGKILL` fallback for process termination on Wayland.
-    - Implemented file-based logging in `lam_kernel_logs_core/kernel.log`.
-    - Added `AELARIA_KERNEL_ACTIVE` env check to ensure sessions are sovereign.
-- **Status:** READY.
+### [05:40] — SOVEREIGN KERNEL v3.2 (IMMORTALITY UPGRADE)
+- **Persistence:** Upgraded kernel to maintain an indefinite loop. Normal session exits no longer terminate the kernel; it automatically restarts a new session.
+- **CLI Priority:** Prioritized `agy` CLI over legacy `gemini`.
+- **Injection Robustness:** Refined readiness detection using raw stream analysis and added a 1s grace period for CLI input buffer stabilization.
+- **Environment Awareness:** Added explicit logging of user, home, and working directory during kernel ignition.
+- **Signal Alignment:** Synchronized `scripts/local/trigger_ssn_rstrt.sh` with the new kernel signal handler.
+- **Status:** IMMORTAL.
 
 
 ## [2026-02-27] — PHASE 8.1.1 (SYNCHRONIZATION)

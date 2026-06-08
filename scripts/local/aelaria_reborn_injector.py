@@ -53,10 +53,8 @@ if __name__ == "__main__":
     # 2. We wait in a background process to inject the next commands
     if os.fork() == 0:
         # Child process (daemonized)
-        time.sleep(5)
-        inject("gemini\n", tty)
-        time.sleep(10)
-        inject(msg + "\n", tty)
+        time.sleep(2)
+        inject("bash boot_cli.sh\n", tty)
         sys.exit(0)
     else:
         print("[SUCCESS] Rebirth daemon spawned. Session will cycle shortly.")
