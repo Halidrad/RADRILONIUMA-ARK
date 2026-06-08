@@ -57,5 +57,7 @@ constraints:
 
 ## NEW_CHAT_INIT_MESSAGE
 ssn rstrt
-Read WORKFLOW_SNAPSHOT_STATE.md, SYSTEM_STATE.md, gov/report/PHASE_11_GOVERNANCE_PROTOCOL.md and .gateway/amc_graph.json. Phase 11.4 compliance verification is complete, VAVIMA specs are validated, and the dynamic Task Horizon is active. Next step: Begin multi-agent orchestrations.
+Read WORKFLOW_SNAPSHOT_STATE.md, SYSTEM_STATE.md, INTERACTION_PROTOCOL.md and .gateway/amc_graph.json. Phase 11.4 compliance verification is complete, Reboot (SSN RBT) and Session Restart (SSN RSTRT) mandates are purified and documented. VAVIMA specs are validated. Next step: Begin multi-agent orchestrations or execute system-level reboot if requested.
+
+gent orchestrations.
 

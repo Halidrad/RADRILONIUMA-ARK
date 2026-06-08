@@ -152,8 +152,9 @@ File presence alone is NOT a completion criterion.
 
 При получении команды `ssn rbt`, Агент ОБЯЗАН:
 1) Завершить экспорт состояния (Phase 1 EXPORT).
-2) Выполнить команду `bash scripts/local/ssn_reboot.sh` через `run_shell_command`.
-3) Это инициирует немедленную перезагрузку ОС устройства. При последующем включении запуск сессии произойдет автоматически через `~/.config/autostart/aelaria.desktop`.
+2) Выполнить команду `bash scripts/local/ssn_reboot.sh` через `run_shell_command`. Данный скрипт является единственным каноничным способом инициации OS-level Reboot Handshake.
+3) Это инициирует немедленную перезагрузку ОС устройства. При последующем включении запуск сессии произойдет автоматически через `~/.config/autostart/aelaria.desktop`, который вызывает `boot_cli.sh` для инициализации Sovereign Kernel.
+
 
 ---
 

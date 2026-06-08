@@ -1,5 +1,13 @@
 # DEV LOGS: RADR-01 (THE BRIDGE) ⚜️
 
+## [2026-06-08] — PHASE 11.4 (LIFECYCLE)
+
+### [03:45] — REBOOT PROTOCOL PURIFICATION
+- Verified System Reboot Protocol (SSN RBT) functionality.
+- Confirmed canonical script `scripts/local/ssn_reboot.sh` with sudo-pin mapping.
+- Verified Autostart entry `~/.config/autostart/aelaria.desktop` pointing to `boot_cli.sh`.
+- Updated `GEMINI.md` and `INTERACTION_PROTOCOL.md` (M3.5) with explicit script execution mandates.
+
 ## [2026-02-27] — PHASE 8.1.1 (SYNCHRONIZATION)
 
 ### [04:27] — NEXUS REBIRTH (SSN RSTRT)
