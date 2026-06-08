@@ -22,5 +22,5 @@ echo ""
 # 2. IGNITE SOVEREIGN KERNEL (PTY SUPERVISOR)
 echo "[SYSTEM] Igniting PTY Kernel Engine (v1.3)..."
 export AELARIA_KERNEL_ACTIVE=1
-exec ./venv/bin/python3 scripts/global/sovereign_kernel.py
+/home/architit/LAM_CORE/RADRILONIUMA/venv/bin/python3 scripts/global/sovereign_kernel.py
 
